@@ -16,7 +16,7 @@ public class Wait extends Task {
 
         NodeWoodCutter.state = " Waiting....";
 
-        Timing.waitCondition(() -> !this.canProcess(), 5000);
+        CustomTiming.waitCondition(() -> !this.canProcess(), 5000);
 
     }
 

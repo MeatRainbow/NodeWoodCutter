@@ -34,7 +34,7 @@ public class BankItems extends Task {
 
         if (banks.size() > 0){
             banks.get(chosenBooth).interact("Bank");
-            Timing.waitCondition(() -> api.getBank().isOpen(), 5000);
+            CustomTiming.waitCondition(() -> api.getBank().isOpen(), 5000);
             if (api.getBank().isOpen()){
                 api.getBank().depositAllExcept(item -> item.getName().endsWith("axe"));
             }

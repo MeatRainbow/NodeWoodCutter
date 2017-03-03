@@ -47,7 +47,7 @@ public class ChopWood extends Task {
             NodeWoodCutter.currentTree = tree.get(0);
             if (tree.get(0).interact("Chop down")){
                 NodeWoodCutter.state = "Chopping Tree";
-                Timing.waitCondition(() -> api.getMap().realDistance(tree.get(0)) <= 1 && api.myPlayer().isAnimating() && !api.myPlayer().isMoving()
+                CustomTiming.waitCondition(() -> api.getMap().realDistance(tree.get(0)) <= 1 && api.myPlayer().isAnimating() && !api.myPlayer().isMoving()
                                 , api.random(3000, 6000));
             }else{
                 NodeWoodCutter.state = "Waiting for a good tree...";

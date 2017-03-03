@@ -45,7 +45,7 @@ public class NodeWoodCutter extends Script {
         try{
             taskList.stream().filter(x -> x.canProcess()).findFirst().get().process();
         }catch (NoSuchElementException e){
-            Timing.waitCondition(() -> !myPlayer().isAnimating(), random(1000, 2000));
+            CustomTiming.waitCondition(() -> !myPlayer().isAnimating(), random(1000, 2000));
         }
 
 
@@ -85,7 +85,7 @@ public class NodeWoodCutter extends Script {
         g.setFont(font1);
         g.setColor(color1);
         g.drawString("State: " + state, 220, 365);
-        g.drawString("Runtime: " + Timing.msToString(getExperienceTracker().getElapsed(Skill.WOODCUTTING)), 220, 386);
+        g.drawString("Runtime: " + CustomTiming.formatMS(getExperienceTracker().getElapsed(Skill.WOODCUTTING)), 220, 386);
         g.drawString("Logs Collected: " + gainedLogs, 219, 405);
         g.drawString("EXP/hour: " + getExperienceTracker().getGainedXPPerHour(Skill.WOODCUTTING), 220, 427);
         g.drawString("Levels gained (current level): " + getExperienceTracker().getGainedLevels(Skill.WOODCUTTING)
