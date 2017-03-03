@@ -1,5 +1,4 @@
 import org.osbot.rs07.api.map.constants.Banks;
-import org.osbot.rs07.api.model.NPC;
 import org.osbot.rs07.api.model.RS2Object;
 import org.osbot.rs07.script.MethodProvider;
 
@@ -31,7 +30,7 @@ public class BankItems extends Task {
         List<RS2Object> banks = api.getObjects().getAll().stream().filter(bankFilter).collect(Collectors.toList());
         api.log("Found " + banks.size() + " suitable booths! " );
 
-        int chosenBooth = api.random(0, banks.size());
+        int chosenBooth = api.random(0, banks.size()-1);
 
         if (banks.size() > 0){
             banks.get(chosenBooth).interact("Bank");

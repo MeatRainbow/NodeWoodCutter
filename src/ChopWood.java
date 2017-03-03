@@ -19,14 +19,9 @@ public class ChopWood extends Task {
                     tree.hasAction("Chop down") &&
                     peopleAroundEntity(tree) <= 2;
 
-    private Predicate<RS2Object> secondBestTree = tree ->
-            tree != null &&
-                    NodeWoodCutter.WOOD_AREA.contains(tree) &&
-                    tree.hasAction("Chop down") ;
 
 
-
-    public ChopWood(MethodProvider api) {
+    ChopWood(MethodProvider api) {
         super(api);
     }
 
@@ -44,7 +39,7 @@ public class ChopWood extends Task {
 
         NodeWoodCutter.state = "State: Finding tree to cut";
 
-        List<RS2Object> tree = api.getObjects().getAll().stream().filter(suitableTree).collect(Collectors.toList());
+        final List<RS2Object> tree = api.getObjects().getAll().stream().filter(suitableTree).collect(Collectors.toList());
         NodeWoodCutter.gainedExp = api.getExperienceTracker().getGainedXP(Skill.WOODCUTTING);
         if (tree != null){
             tree.sort(Comparator.<RS2Object>comparingInt(a -> api.getMap().realDistance(a))
@@ -52,22 +47,13 @@ public class ChopWood extends Task {
             NodeWoodCutter.currentTree = tree.get(0);
             if (tree.get(0).interact("Chop down")){
                 NodeWoodCutter.state = "Chopping Tree";
-                Timing.waitCondition(() -> NodeWoodCutter.gainedExp != api.getExperienceTracker().getGainedXP(Skill.WOODCUTTING)
+                Timing.waitCondition(() -> api.getMap().realDistance(tree.get(0)) <= 1 && api.myPlayer().isAnimating() && !api.myPlayer().isMoving()
                                 , api.random(3000, 6000));
+            }else{
+                NodeWoodCutter.state = "Waiting for a good tree...";
             }
-        }else {
-            api.log("Trees have a lot of players around, consider using another world");
-            tree = api.getObjects().getAll().stream().filter(secondBestTree).collect(Collectors.toList());
-            tree.sort(Comparator.<RS2Object>comparingInt(this::peopleAroundEntity)
-                    .thenComparingInt(this::peopleAroundEntity));
-            NodeWoodCutter.currentTree = tree.get(0);
-            if (tree.get(0).interact("Chop down")){
-                Timing.waitCondition(() -> NodeWoodCutter.gainedExp != api.getExperienceTracker().getGainedXP(Skill.WOODCUTTING)
-                        , api.random(900, 1200));
-                NodeWoodCutter.state = "Chopping Tree";
-            }
-
         }
+
 
     }
 
